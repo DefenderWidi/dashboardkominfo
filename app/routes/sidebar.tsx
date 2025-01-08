@@ -25,14 +25,13 @@ export default function Sidebar() {
         } lg:translate-x-0 lg:static lg:flex lg:min-h-screen overflow-y-auto transition-transform duration-300`}
       >
         <div className="flex flex-col h-full">
-          {/* Logo dan Judul Sidebar */}
-          <div className="flex items-center mb-6">
+          {/* Logo Sidebar */}
+          <div className="flex items-center justify-center mb-2">
             <img
-              src="/diskominfologo.png" // Pastikan path ini sesuai dengan lokasi file logo di folder `public`
-              alt="Diskominfo Logo"
-              className="w-10 h-10 mr-2"
+              src="/fotoheader.png" // Path ke logo baru
+              alt="Logo"
+              className="w-50 h-50 object-contain" // Sesuaikan ukuran logo
             />
-            <h1 className="text-2xl font-bold text-gray-800">Diskominfo</h1>
           </div>
 
           {/* Menu Navigasi */}

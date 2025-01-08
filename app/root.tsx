@@ -8,9 +8,14 @@ import {
 import type { LinksFunction } from "@remix-run/node";
 
 import "./tailwind.css";
-import Layout from "./routes/layout";
+import Sidebar from "./routes/sidebar";
 
-export const links: LinksFunction = () => [];
+export const links: LinksFunction = () => [
+  {
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700;900&display=swap",
+  },
+];
 
 export default function Root() {
   return (
@@ -21,10 +26,14 @@ export default function Root() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full bg-gray-100 text-gray-800 font-sans overflow-x-hidden">
-        <Layout>
-          <Outlet />
-        </Layout>
+      <body className="h-full bg-gray-100 text-gray-800 overflow-hidden">
+        <div className="h-full flex">
+          {/* Sidebar tetap di-root */}
+          <Sidebar />
+          <main className="flex-1 overflow-y-auto p-4">
+            <Outlet /> {/* Konten halaman akan berubah di sini */}
+          </main>
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>
