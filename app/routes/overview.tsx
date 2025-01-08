@@ -1,7 +1,7 @@
 export default function Overview() {
   return (
     <div
-      className="h-screen w-full bg-cover bg-center flex flex-col justify-center items-center"
+      className="h-screen w-full bg-cover bg-center rounded-lg flex flex-col justify-center items-center"
       style={{
         backgroundImage: "url('/herobackground.png')",
       }}
