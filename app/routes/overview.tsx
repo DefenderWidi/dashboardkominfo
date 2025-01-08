@@ -1,18 +1,17 @@
 export default function Overview() {
   return (
-    <div className="container mx-auto">
-      <h1 className="text-3xl font-bold mt-6">Welcome to Diskominfo Dashboard</h1>
-      <p className="text-gray-600 mt-2">
+    <div
+      className="h-screen w-full bg-cover bg-center flex flex-col justify-center items-center"
+      style={{
+        backgroundImage: "url('/herobackground.png')",
+      }}
+    >
+      <h1 className="text-4xl font-bold text-white shadow-lg text-center">
+        Welcome to Diskominfo Dashboard
+      </h1>
+      <p className="text-lg text-white mt-4 text-center">
         Jelajahi fitur dengan menggunakan menu di sebelah kiri.
       </p>
-      {/* Tambahkan Gambar */}
-      <div className="mt-6">
-        <img
-          src="/herokabsemarang.png"
-          alt="Hero Kabupaten Semarang"
-          className="w-full max-w-2xl mx-auto rounded-lg shadow-lg"
-        />
-      </div>
     </div>
   );
 }
