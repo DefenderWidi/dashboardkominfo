@@ -8,7 +8,7 @@ export default function Overview() {
       {/* Tambahkan Gambar */}
       <div className="mt-6">
         <img
-          src="/herokabsemarang.png" // Path ke gambar di folder public
+          src="/herokabsemarang.png"
           alt="Hero Kabupaten Semarang"
           className="w-full max-w-2xl mx-auto rounded-lg shadow-lg"
         />
