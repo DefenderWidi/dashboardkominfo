@@ -7,7 +7,7 @@ export default function Overview() {
       }}
     >
       <h1 className="text-4xl font-bold text-white shadow-lg text-center">
-        Welcome to Diskominfo Dashboard
+        Welcome to KOMDIGI Dashboard
       </h1>
       <p className="text-lg text-white mt-4 text-center">
         Jelajahi fitur dengan menggunakan menu di sebelah kiri.
