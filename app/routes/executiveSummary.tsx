@@ -133,19 +133,26 @@ export default function ExecutiveSummary() {
         wawasan melalui tabel dan visualisasi grafik.
       </p>
 
-      {/* Upload File */}
-      <div className="mb-6">
-        <label className="block mb-2 font-medium text-[#29166e]">
-          Upload Excel Files (Max 3)
-        </label>
-        <input
-          type="file"
-          accept=".xlsx, .xls"
-          multiple
-          onChange={handleFileUpload}
-          className="block w-full text-sm text-[#29166e] border border-[#29166e] rounded-lg cursor-pointer focus:outline-none"
-        />
-      </div>
+{/* Upload File */}
+<div className="mb-6">
+  <label
+    className="block mb-2 text-sm font-medium text-[#29166e]"
+    htmlFor="multiple_files"
+  >
+    Upload Excel Files (Max 3)
+  </label>
+  <input
+    id="multiple_files"
+    type="file"
+    multiple
+    accept=".xlsx, .xls"
+    onChange={handleFileUpload}
+    className="block w-full text-sm text-[#29166e] border border-[#29166e] rounded-lg cursor-pointer bg-[#e6f0ff] focus:outline-none hover:bg-[#d6e8ff]"
+  />
+  <p className="mt-2 text-sm text-gray-500">
+    File yang diterima: <span className="font-medium text-[#29166e]">.xlsx</span>
+  </p>
+</div>
 
       {/* Display Files */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
