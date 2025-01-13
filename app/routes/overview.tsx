@@ -3,16 +3,16 @@ import Showcase from "./showcase";
 export default function Overview() {
   return (
     <div
-      className="w-full h-screen overflow-hidden bg-gray-200 flex justify-center items-center"
+      className="h-screen w-full bg-cover bg-center flex flex-col justify-center items-center rounded-lg overflow-hidden"
       style={{
         backgroundImage: "url('/herobackground.png')",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        backgroundPosition: "top",
+        backgroundPosition: "center top",
       }}
     >
-      {/* Kontainer Utama dengan Frame Rounded */}
-      <div className="w-full max-w-7xl h-full bg-transparent rounded-lg overflow-y-scroll shadow-lg">
+      {/* Kontainer Utama dengan Scroll */}
+      <div className="w-full max-w-7xl h-full bg-transparent rounded-lg overflow-y-auto shadow-lg">
         {/* Bagian Pertama */}
         <section className="h-screen w-full flex flex-col justify-center items-center">
           {/* Header Section */}
@@ -88,7 +88,8 @@ export default function Overview() {
                 </h3>
               </div>
               <p className="text-sm text-white mt-4">
-                Menyediakan berbagai jenis grafik untuk membantu Anda memahami data lebih baik.
+                Menyediakan berbagai jenis grafik untuk membantu Anda memahami data
+                lebih baik.
               </p>
             </div>
 
