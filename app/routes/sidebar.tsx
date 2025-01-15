@@ -1,13 +1,9 @@
 import { useState } from "react";
-import { useLocation } from "@remix-run/react"; // Import useLocation
-import { HomeIcon, ChartBarIcon, SearchIcon } from "@heroicons/react/outline"; // Heroicons v1
+import { NavLink } from "@remix-run/react";
+import { HomeIcon, ChartBarIcon, SearchIcon } from "@heroicons/react/outline";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation(); // Ambil lokasi URL saat ini
-
-  // Fungsi untuk menentukan apakah menu sedang aktif
-  const isActive = (path: string) => location.pathname === path;
 
   return (
     <>
@@ -33,9 +29,9 @@ export default function Sidebar() {
           {/* Logo Sidebar */}
           <div className="flex items-center justify-center mb-2">
             <img
-              src="/fotoheader.png" // Path ke logo baru
+              src="/fotoheader.png"
               alt="Logo"
-              className="w-50 h-50 object-contain" // Sesuaikan ukuran logo
+              className="w-50 h-50 object-contain"
             />
           </div>
 
@@ -43,60 +39,52 @@ export default function Sidebar() {
           <nav>
             <ul className="space-y-4">
               <li>
-                <a
-                  href="/"
+                <NavLink
+                  to="/"
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center p-2 rounded-md transition-all duration-300 ${
-                    isActive("/")
-                      ? "bg-[#29166e] text-white"
-                      : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
-                  }`}
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-md transition-all duration-300 ${
+                      isActive
+                        ? "bg-[#29166e] text-white"
+                        : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+                    }`
+                  }
                 >
-                  <HomeIcon
-                    className={`w-6 h-6 transition-colors duration-300 ${
-                      isActive("/") ? "text-white" : "text-[#29166e]"
-                    }`}
-                  />{" "}
+                  <HomeIcon className="w-6 h-6" />
                   <span className="ml-2">Overview</span>
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a
-                  href="/search"
+                <NavLink
+                  to="/search"
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center p-2 rounded-md transition-all duration-300 ${
-                    isActive("/search")
-                      ? "bg-[#29166e] text-white"
-                      : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
-                  }`}
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-md transition-all duration-300 ${
+                      isActive
+                        ? "bg-[#29166e] text-white"
+                        : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+                    }`
+                  }
                 >
-                  <SearchIcon
-                    className={`w-6 h-6 transition-colors duration-300 ${
-                      isActive("/search") ? "text-white" : "text-[#29166e]"
-                    }`}
-                  />{" "}
+                  <SearchIcon className="w-6 h-6" />
                   <span className="ml-2">Pencarian Data</span>
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a
-                  href="/executiveSummary"
+                <NavLink
+                  to="/executiveSummary"
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center p-2 rounded-md transition-all duration-300 ${
-                    isActive("/executiveSummary")
-                      ? "bg-[#29166e] text-white"
-                      : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
-                  }`}
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-md transition-all duration-300 ${
+                      isActive
+                        ? "bg-[#29166e] text-white"
+                        : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+                    }`
+                  }
                 >
-                  <ChartBarIcon
-                    className={`w-6 h-6 transition-colors duration-300 ${
-                      isActive("/executiveSummary")
-                        ? "text-white"
-                        : "text-[#29166e]"
-                    }`}
-                  />{" "}
+                  <ChartBarIcon className="w-6 h-6" />
                   <span className="ml-2">Executive Summary</span>
-                </a>
+                </NavLink>
               </li>
             </ul>
           </nav>
