@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "@remix-run/react"; // Import useLocation
-import { HomeIcon, ChartBarIcon } from "@heroicons/react/outline"; // Heroicons v1
+import { HomeIcon, ChartBarIcon, SearchIcon } from "@heroicons/react/outline"; // Heroicons v1
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,14 +57,25 @@ export default function Sidebar() {
                       isActive("/") ? "text-white" : "text-[#29166e]"
                     }`}
                   />{" "}
-                  {/* Icon Home */}
-                  <span
-                    className={`ml-2 transition-colors duration-300 ${
-                      isActive("/") ? "text-white" : "text-[#29166e]"
+                  <span className="ml-2">Overview</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/search"
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center p-2 rounded-md transition-all duration-300 ${
+                    isActive("/search")
+                      ? "bg-[#29166e] text-white"
+                      : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+                  }`}
+                >
+                  <SearchIcon
+                    className={`w-6 h-6 transition-colors duration-300 ${
+                      isActive("/search") ? "text-white" : "text-[#29166e]"
                     }`}
-                  >
-                    Overview
-                  </span>
+                  />{" "}
+                  <span className="ml-2">Pencarian Data</span>
                 </a>
               </li>
               <li>
@@ -84,16 +95,7 @@ export default function Sidebar() {
                         : "text-[#29166e]"
                     }`}
                   />{" "}
-                  {/* Icon Dashboard */}
-                  <span
-                    className={`ml-2 transition-colors duration-300 ${
-                      isActive("/executiveSummary")
-                        ? "text-white"
-                        : "text-[#29166e]"
-                    }`}
-                  >
-                    Executive Summary
-                  </span>
+                  <span className="ml-2">Executive Summary</span>
                 </a>
               </li>
             </ul>
