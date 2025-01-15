@@ -42,7 +42,7 @@ export default function Search() {
       {/* Copywriting */}
       <div className="mb-6 text-center">
         <h1 className="text-3xl font-bold text-[#29166e]">Pencarian Data</h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 mt-1">
           Temukan data yang Anda butuhkan dengan cepat dan mudah
         </p>
       </div>
@@ -77,7 +77,7 @@ export default function Search() {
             type="search"
             id="default-search"
             className="block w-full p-4 ps-10 text-sm text-gray-900 border border-[#01458e] rounded-lg bg-gray-50 focus:ring-[#01458e] focus:border-[#01458e]"
-            placeholder="Cari file Anda..."
+            placeholder="Cari file..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             required
