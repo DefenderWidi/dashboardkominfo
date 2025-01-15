@@ -21,7 +21,7 @@ export default function Overview() {
               Welcome to{" "}
               <span className="text-[#90caf9]">KOMDIGI</span> Dashboard
             </h1>
-            <p className="text-lg text-white mt-4">
+            <p className="text-lg text-[#CECECE] mt-4">
               Ubah data menjadi informasi yang bermakna hanya dalam hitungan detik.
             </p>
 
@@ -58,14 +58,14 @@ export default function Overview() {
           <h2 className="text-3xl font-bold text-white text-center">
             Kelebihan dan Fungsi
           </h2>
-          <p className="text-md text-white mt-2 text-center">
+          <p className="text-md text-[#CECECE] mt-2 text-center">
             Kenapa Anda harus memilih KOMDIGI Dashboard?
           </p>
 
 {/* Grid of Cards */}
 <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
   {/* Card 1 */}
-  <div className="p-6 bg-[rgba(255,255,255,0.15)] rounded-lg shadow-md hover:scale-105 transition transform duration-300">
+  <div className="p-6 bg-[rgba(255,255,255,0.15)] rounded-lg shadow-md backdrop-blur-sm hover:scale-105 transition transform duration-300">
     <div className="flex items-center space-x-4">
       <div className="w-12 h-12 bg-[#90caf9] flex justify-center items-center rounded-full">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32" className="text-white">
@@ -76,13 +76,13 @@ export default function Overview() {
       </div>
       <h3 className="text-lg font-semibold text-white">Visualisasi Interaktif</h3>
     </div>
-    <p className="text-sm text-white mt-4">
+    <p className="text-sm text-[#DEDEDE] mt-4">
     Tersedia berbagai jenis grafik interaktif yang dapat dikustomisasi untuk membantu Anda memahami data secara lebih mendalam.
     </p>
   </div>
 
   {/* Card 2 */}
-  <div className="p-6 bg-[rgba(255,255,255,0.15)] rounded-lg shadow-md hover:scale-105 transition transform duration-300">
+  <div className="p-6 bg-[rgba(255,255,255,0.15)] rounded-lg shadow-md backdrop-blur-sm hover:scale-105 transition transform duration-300">
     <div className="flex items-center space-x-4">
       <div className="w-12 h-12 bg-[#90caf9] flex justify-center items-center rounded-full">
         <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 512 512" className="text-white">
@@ -92,13 +92,13 @@ export default function Overview() {
       </div>
       <h3 className="text-lg font-semibold text-white">Analisis Cepat</h3>
     </div>
-    <p className="text-sm text-white mt-4">
+    <p className="text-sm text-[#DEDEDE] mt-4">
     Proses data dengan cepat dan tampilkan hasil analisis dalam hitungan detik untuk mendukung pengambilan keputusan yang efisien.
     </p>
   </div>
 
   {/* Card 3 */}
-  <div className="p-6 bg-[rgba(255,255,255,0.15)] rounded-lg shadow-md hover:scale-105 transition transform duration-300">
+  <div className="p-6 bg-[rgba(255,255,255,0.15)] rounded-lg shadow-md backdrop-blur-sm hover:scale-105 transition transform duration-300">
     <div className="flex items-center space-x-4">
       <div className="w-12 h-12 bg-[#90caf9] flex justify-center items-center rounded-full">
         <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" className="text-white">
@@ -107,7 +107,7 @@ export default function Overview() {
       </div>
       <h3 className="text-lg font-semibold text-white">Dukungan Multiple Data</h3>
     </div>
-    <p className="text-sm text-white mt-4">
+    <p className="text-sm text-[#DEDEDE] mt-4">
     Kemudahan membandingkan hingga tiga data sekaligus untuk mendukung analisis dan pengambilan keputusan yang lebih akurat.
     </p>
   </div>
@@ -121,7 +121,7 @@ export default function Overview() {
             <h2 className="text-3xl font-bold text-white drop-shadow-lg">
               Sesuaikan bentuk grafik sesuai kebutuhan Anda!
             </h2>
-            <p className="text-md text-white mt-2">
+            <p className="text-md text-[#CECECE] mt-2">
               Beragam grafik interaktif yang membantu Anda memahami data lebih baik.
             </p>
           </div>
