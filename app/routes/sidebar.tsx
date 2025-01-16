@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { NavLink } from "@remix-run/react";
-import { HomeIcon, ChartBarIcon, SearchIcon } from "@heroicons/react/outline";
+import { HomeIcon, ChartBarIcon, SearchIcon, PlusCircleIcon } from "@heroicons/react/outline";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [sheets, setSheets] = useState<string[]>([]);
+
+  // Tambahkan sheet baru
+  const addSheet = () => {
+    const newSheetName = `Sheet ${sheets.length + 1}`;
+    setSheets((prevSheets) => [...prevSheets, newSheetName]);
+  };
 
   return (
     <>
@@ -86,6 +93,40 @@ export default function Sidebar() {
                   <span className="ml-2">Executive Summary</span>
                 </NavLink>
               </li>
+            </ul>
+          </nav>
+
+          {/* Tambah Sheet */}
+          <div className="mt-6">
+            <button
+              onClick={addSheet}
+              className="flex items-center w-full p-2 bg-[#29166e] text-white rounded-md transition-all duration-300 hover:bg-[#1f125e]"
+            >
+              <PlusCircleIcon className="w-6 h-6 mr-2" />
+              Tambah Sheet
+            </button>
+          </div>
+
+          {/* Daftar Sheets */}
+          <nav className="mt-4">
+            <ul className="space-y-2">
+              {sheets.map((sheet, index) => (
+                <li key={index}>
+                  <NavLink
+                    to={`/executiveSummary/${sheet}`}
+                    onClick={() => setIsOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center p-2 rounded-md transition-all duration-300 ${
+                        isActive
+                          ? "bg-[#29166e] text-white"
+                          : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+                      }`
+                    }
+                  >
+                    <span>{sheet}</span>
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </nav>
         </div>

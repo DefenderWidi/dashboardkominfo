@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import {
   LineChart,
@@ -15,7 +15,7 @@ import {
   Cell,
 } from "recharts";
 
-export default function ExecutiveSummary() {
+export default function ExecutiveSummary({ sheetName }: { sheetName?: string }) {
   const [fileData, setFileData] = useState<
     {
       headers: string[];
@@ -26,7 +26,20 @@ export default function ExecutiveSummary() {
     }[]
   >([]);
 
+  const [history, setHistory] = useState<string[]>([]);
+
   const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
+
+  useEffect(() => {
+    const storedHistory = localStorage.getItem("uploadHistory");
+    if (storedHistory) {
+      setHistory(JSON.parse(storedHistory));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("uploadHistory", JSON.stringify(history));
+  }, [history]);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -87,6 +100,7 @@ export default function ExecutiveSummary() {
               yAxis: defaultYAxis,
             },
           ]);
+          setHistory((prev) => [...prev, file.name]);
         }
       };
       reader.readAsBinaryString(file);
@@ -125,12 +139,14 @@ export default function ExecutiveSummary() {
     <div className="p-6 w-full bg-white rounded-lg shadow-md">
       {/* Copywriting */}
       <div className="mb-6 text-center">
-        <h1 className="text-3xl font-bold text-[#29166e]">Executive Summary</h1>
+      <h1 className="text-3xl font-bold text-[#29166e]">
+  {sheetName ? `Executive Summary for ${sheetName}` : "Executive Summary"}
+</h1>
         <p className="text-gray-600 mt-1">
-        Dashboard ini membantu Anda memahami data secara cepat. Unggah hingga tiga file Excel untuk mendapatkan wawasan melalui tabel dan grafik interaktif.
+          Dashboard ini membantu Anda memahami data secara cepat. Unggah hingga tiga file Excel untuk mendapatkan wawasan melalui tabel dan grafik interaktif.
         </p>
       </div>
-  
+
       {/* Upload File Section */}
       <form className="max-w-2xl mx-auto bg-gray-50 p-6 rounded-lg border border-gray-300">
         <label
@@ -150,126 +166,146 @@ export default function ExecutiveSummary() {
         <p className="mt-2 text-sm text-gray-600">
           File yang diterima: <span className="font-medium">.xlsx</span>
         </p>
-      </form>  
+      </form>
 
-{/* Display Files */}
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-  {fileData.map((file, index) => (
-   <div
-   key={index}
-   className="bg-gray-50 p-4 rounded-lg border border-gray-300 shadow-lg hover:shadow-2xl transition-shadow"
- > 
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-bold text-[#29166e]">File {index + 1}</h3>
-        <button
-          className="text-red-500 hover:text-red-700"
-          onClick={() => removeFile(index)}
-        >
-          Hapus
-        </button>
+      {/* History Section */}
+      <div className="mt-6">
+        <h2 className="text-xl font-semibold text-[#29166e]">Riwayat File</h2>
+        <ul className="list-disc pl-5 mt-2 text-gray-700">
+          {history.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
       </div>
 
-      {/* Dropdowns for Axis */}
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div>
-          <label className="block mb-2 font-medium text-[#29166e]">Sumbu X</label>
-          <select
-            value={file.xAxis}
-            onChange={(e) => updateChartData(index, e.target.value, file.yAxis)}
-            className="block w-full text-sm bg-white text-[#29166e] border border-[#29166e] rounded-lg focus:outline-none py-2 px-1"
+      {/* Display Files */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        {fileData.map((file, index) => (
+          <div
+            key={index}
+            className="bg-gray-50 p-4 rounded-lg border border-gray-300 shadow-lg hover:shadow-2xl transition-shadow"
           >
-            {file.headers.map((header, idx) => (
-              <option key={idx} value={header}>
-                {header}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block mb-2 font-medium text-[#29166e]">Sumbu Y</label>
-          <select
-            value={file.yAxis}
-            onChange={(e) => updateChartData(index, file.xAxis, e.target.value)}
-            className="block w-full text-sm bg-white text-[#29166e] border border-[#29166e] rounded-lg focus:outline-none py-2 px-1"
-          >
-            {file.headers.map((header, idx) => (
-              <option key={idx} value={header}>
-                {header}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* Table */}
-      <div className="overflow-x-auto mb-4">
-        <table className="w-full border-collapse text-sm">
-          <thead>
-            <tr className="bg-[#01458e] text-white">
-              {file.headers.map((header, idx) => (
-                <th key={idx} className="p-2 text-left">
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {file.tableData.map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className={`${
-                  rowIndex % 2 === 0 ? "bg-gray-100" : "bg-white"
-                } hover:bg-gray-200`}
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-bold text-[#29166e]">
+                File {index + 1}
+              </h3>
+              <button
+                className="text-red-500 hover:text-red-700"
+                onClick={() => removeFile(index)}
               >
-                {row.map((cell, cellIndex) => (
-                  <td key={cellIndex} className="p-2">
-                    {cell}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                Hapus
+              </button>
+            </div>
 
-      {/* Charts */}
-      {file.chartData.length > 0 && (
-        <div className="grid grid-cols-1 gap-4">
-          {/* Line Chart */}
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={file.chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="value" stroke="#01458e" />
-            </LineChart>
-          </ResponsiveContainer>
+            {/* Dropdowns for Axis */}
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block mb-2 font-medium text-[#29166e]">
+                  Sumbu X
+                </label>
+                <select
+                  value={file.xAxis}
+                  onChange={(e) =>
+                    updateChartData(index, e.target.value, file.yAxis)
+                  }
+                  className="block w-full text-sm bg-white text-[#29166e] border border-[#29166e] rounded-lg focus:outline-none py-2 px-1"
+                >
+                  {file.headers.map((header, idx) => (
+                    <option key={idx} value={header}>
+                      {header}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium text-[#29166e]">
+                  Sumbu Y
+                </label>
+                <select
+                  value={file.yAxis}
+                  onChange={(e) =>
+                    updateChartData(index, file.xAxis, e.target.value)
+                  }
+                  className="block w-full text-sm bg-white text-[#29166e] border border-[#29166e] rounded-lg focus:outline-none py-2 px-1"
+                >
+                  {file.headers.map((header, idx) => (
+                    <option key={idx} value={header}>
+                      {header}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
-          {/* Bar Chart */}
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={file.chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="value" fill="#01458e" />
-            </BarChart>
-          </ResponsiveContainer>
+            {/* Table */}
+            <div className="overflow-x-auto mb-4">
+              <table className="w-full border-collapse text-sm">
+                <thead>
+                  <tr className="bg-[#01458e] text-white">
+                    {file.headers.map((header, idx) => (
+                      <th key={idx} className="p-2 text-left">
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {file.tableData.map((row, rowIndex) => (
+                    <tr
+                      key={rowIndex}
+                      className={`${
+                        rowIndex % 2 === 0 ? "bg-gray-100" : "bg-white"
+                      } hover:bg-gray-200`}
+                    >
+                      {row.map((cell, cellIndex) => (
+                        <td key={cellIndex} className="p-2">
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-          {/* Pie Chart */}
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={file.chartData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                fill="#8884d8"
-              >
-                {file.chartData.map((entry, idx) => (
+            {/* Charts */}
+            {file.chartData.length > 0 && (
+              <div className="grid grid-cols-1 gap-4">
+                {/* Line Chart */}
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={file.chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="value" stroke="#01458e" />
+                  </LineChart>
+                </ResponsiveContainer>
+
+                {/* Bar Chart */}
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={file.chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="value" fill="#01458e" />
+                  </BarChart>
+                </ResponsiveContainer>
+
+                {/* Pie Chart */}
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={file.chartData}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      fill="#8884d8"
+                    >
+                      {file.chartData.map((entry, idx) => (
                   <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
                 ))}
               </Pie>
