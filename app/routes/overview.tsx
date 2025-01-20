@@ -24,32 +24,6 @@ export default function Overview() {
             <p className="text-lg text-[#CECECE] mt-4">
               Ubah data menjadi informasi yang bermakna hanya dalam hitungan detik.
             </p>
-
-            {/* Tombol Mulai */}
-            <div className="mt-6 flex justify-center">
-              <a
-                href="/executivesummary"
-                className="cssbuttons-io-button text-[#90caf9]"
-              >
-                Mulai
-                <span className="icon" aria-hidden="true">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2.5}
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5l6 6m0 0l-6 6m6-6H4.5"
-                    />
-                  </svg>
-                </span>
-              </a>
-            </div>
           </div>
         </section>
 

@@ -92,38 +92,41 @@ export default function Search() {
         </div>
       </form>
 
-      {/* Tabel Data */}
-      <div className="overflow-x-auto mt-6">
-        <table className="min-w-full bg-white border border-gray-300 rounded-md">
-          <thead>
-            <tr className="bg-[#01458e] text-white">
-              <th className="py-2 px-4 text-left">No</th>
-              <th className="py-2 px-4 text-left">Nama File</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.length > 0 ? (
-              filteredData.map((item, index) => (
-                <tr
-                  key={item.id}
-                  className={`border-t ${
-                    index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                  }`}
-                >
-                  <td className="py-2 px-4">{index + 1}</td>
-                  <td className="py-2 px-4">{item.name}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={2} className="text-center py-4 text-gray-500">
-                  Data tidak ditemukan
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+     {/* Tabel Data */}
+<div className="overflow-x-auto mt-6">
+  <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+    <thead>
+      <tr className="bg-[#01458e] text-white">
+        <th className="py-2 px-4 text-left">No</th>
+        <th className="py-2 px-4 text-left">Nama File</th>
+      </tr>
+    </thead>
+    <tbody>
+      {filteredData.length > 0 ? (
+        filteredData.map((item, index) => (
+          <tr
+            key={item.id}
+            className={`${
+              index % 2 === 0 ? "bg-gray-100" : "bg-white"
+            } border-t border-gray-300`}
+          >
+            <td className="py-2 px-4">{index + 1}</td>
+            <td className="py-2 px-4">{item.name}</td>
+          </tr>
+        ))
+      ) : (
+        <tr>
+          <td
+            colSpan={2}
+            className="text-center py-4 text-gray-500 bg-white"
+          >
+            Data tidak ditemukan
+          </td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+</div>
     </div>
   );
 }

@@ -6,6 +6,9 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [sheets, setSheets] = useState<string[]>([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
+  const [isSheetsInitialized, setIsSheetsInitialized] = useState(false); // Untuk menampilkan tombol tambah sheet
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -15,19 +18,28 @@ export default function Sidebar() {
     setSheets((prevSheets) => [...prevSheets, newSheetName]);
   };
 
-  // Hapus sheet berdasarkan index
-  const removeSheet = (index: number) => {
+  // Konfirmasi hapus sheet
+  const confirmDeleteSheet = (index: number) => {
+    setDeleteIndex(index);
+    setShowDeleteConfirm(true);
+  };
+
+  // Hapus sheet setelah konfirmasi
+  const removeSheet = () => {
+    if (deleteIndex === null) return;
+
     if (sheets.length === 1) {
       setShowPopup(true); // Tampilkan popup jika hanya ada satu sheet
+      setShowDeleteConfirm(false); // Tutup konfirmasi
       return;
     }
 
     setSheets((prevSheets) => {
-      const updatedSheets = prevSheets.filter((_, i) => i !== index);
+      const updatedSheets = prevSheets.filter((_, i) => i !== deleteIndex);
 
       // Cek apakah sheet yang sedang aktif dihapus
       const currentSheet = location.pathname.split("/").pop(); // Ambil nama sheet dari URL
-      if (prevSheets[index] === currentSheet) {
+      if (prevSheets[deleteIndex] === currentSheet) {
         if (updatedSheets.length > 0) {
           navigate(`/executiveSummary/${updatedSheets[0]}`); // Pindah ke sheet pertama yang tersisa
         }
@@ -35,6 +47,18 @@ export default function Sidebar() {
 
       return updatedSheets;
     });
+
+    setShowDeleteConfirm(false); // Tutup modal konfirmasi
+    setDeleteIndex(null); // Reset indeks yang akan dihapus
+  };
+
+  // Inisialisasi sheets ketika klik Executive Summary
+  const handleExecutiveSummaryClick = () => {
+    if (!isSheetsInitialized) {
+      setSheets(["Sheet1"]);
+      setIsSheetsInitialized(true); // Pastikan tidak diinisialisasi ulang
+    }
+    setIsOpen(false); // Tutup sidebar
   };
 
   return (
@@ -105,12 +129,7 @@ export default function Sidebar() {
               <li>
                 <NavLink
                   to={`/executiveSummary/${sheets[0] || "Sheet1"}`}
-                  onClick={() => {
-                    if (sheets.length === 0) {
-                      setSheets(["Sheet1"]); // Tambahkan Sheet1 jika tidak ada sheet
-                    }
-                    setIsOpen(false); // Tutup sidebar
-                  }}
+                  onClick={handleExecutiveSummaryClick}
                   className={({ isActive }) =>
                     `flex items-center p-2 rounded-md transition-all duration-300 ${
                       location.pathname.includes("/executiveSummary") || isActive
@@ -127,46 +146,77 @@ export default function Sidebar() {
           </nav>
 
           {/* Daftar Sheets */}
-          <nav className="mt-4">
-            <ul className="space-y-2">
-              {sheets.map((sheet, index) => (
-                <li key={index} className="flex items-center justify-between">
-                  <NavLink
-                    to={`/executiveSummary/${sheet}`}
-                    onClick={() => setIsOpen(false)}
-                    className={({ isActive }) =>
-                      `flex-grow p-2 rounded-md transition-all duration-300 ${
-                        isActive
-                          ? "bg-[#29166e] text-white"
-                          : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
-                      }`
-                    }
-                  >
-                    {sheet}
-                  </NavLink>
-                  <button
-                    onClick={() => removeSheet(index)}
-                    className="text-red-500 hover:text-red-700 ml-2"
-                  >
-                    <TrashIcon className="w-5 h-5" />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {isSheetsInitialized && (
+            <nav className="mt-4">
+              <ul className="space-y-2">
+                {sheets.map((sheet, index) => (
+                  <li key={index} className="flex items-center justify-between">
+                    <NavLink
+                      to={`/executiveSummary/${sheet}`}
+                      onClick={() => setIsOpen(false)}
+                      className={({ isActive }) =>
+                        `flex-grow p-2 rounded-md transition-all duration-300 ${
+                          isActive
+                            ? "bg-[#29166e] text-white"
+                            : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+                        }`
+                      }
+                    >
+                      {sheet}
+                    </NavLink>
+                    <button
+                      onClick={() => confirmDeleteSheet(index)}
+                      className="text-red-500 hover:text-red-700 ml-2"
+                    >
+                      <TrashIcon className="w-5 h-5" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
 
           {/* Tambah Sheet */}
-          <div className="mt-4">
-            <button
-              onClick={addSheet}
-              className="flex items-center justify-center w-full text-[#29166e] p-2 rounded-md hover:bg-blue-200 transition-all duration-300"
-            >
-              <PlusCircleIcon className="w-6 h-6 mr-2" />
-              Tambah Sheet
-            </button>
-          </div>
+          {isSheetsInitialized && (
+            <div className="mt-3 flex justify-center">
+              <button
+                onClick={addSheet}
+                className="flex items-center px-3 py-1 text-[#29166e] rounded-md hover:bg-blue-200 transition-all duration-300"
+                title="Tambah Sheet"
+              >
+                <PlusCircleIcon className="w-5 h-5 mr-2" />
+                <span className="text-sm">Tambah Sheet</span>
+              </button>
+            </div>
+          )}
         </div>
       </aside>
+
+      {/* Modal Konfirmasi Hapus */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
+            <h2 className="text-lg font-bold text-red-600 mb-4">Konfirmasi Hapus</h2>
+            <p className="text-gray-700 mb-4">
+              Apakah Anda yakin ingin menghapus sheet ini?
+            </p>
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={removeSheet}
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+              >
+                Hapus
+              </button>
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+              >
+                Batal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Popup Modal */}
       {showPopup && (
