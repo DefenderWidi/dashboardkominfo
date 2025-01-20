@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { NavLink } from "@remix-run/react";
+import { NavLink, useNavigate, useLocation } from "@remix-run/react";
 import { HomeIcon, ChartBarIcon, SearchIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/outline";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [sheets, setSheets] = useState<string[]>([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Tambah sheet baru
   const addSheet = () => {
@@ -14,7 +17,24 @@ export default function Sidebar() {
 
   // Hapus sheet berdasarkan index
   const removeSheet = (index: number) => {
-    setSheets((prevSheets) => prevSheets.filter((_, i) => i !== index));
+    if (sheets.length === 1) {
+      setShowPopup(true); // Tampilkan popup jika hanya ada satu sheet
+      return;
+    }
+
+    setSheets((prevSheets) => {
+      const updatedSheets = prevSheets.filter((_, i) => i !== index);
+
+      // Cek apakah sheet yang sedang aktif dihapus
+      const currentSheet = location.pathname.split("/").pop(); // Ambil nama sheet dari URL
+      if (prevSheets[index] === currentSheet) {
+        if (updatedSheets.length > 0) {
+          navigate(`/executiveSummary/${updatedSheets[0]}`); // Pindah ke sheet pertama yang tersisa
+        }
+      }
+
+      return updatedSheets;
+    });
   };
 
   return (
@@ -84,11 +104,16 @@ export default function Sidebar() {
               </li>
               <li>
                 <NavLink
-                  to="/executiveSummary"
-                  onClick={() => setIsOpen(false)}
+                  to={`/executiveSummary/${sheets[0] || "Sheet1"}`}
+                  onClick={() => {
+                    if (sheets.length === 0) {
+                      setSheets(["Sheet1"]); // Tambahkan Sheet1 jika tidak ada sheet
+                    }
+                    setIsOpen(false); // Tutup sidebar
+                  }}
                   className={({ isActive }) =>
                     `flex items-center p-2 rounded-md transition-all duration-300 ${
-                      isActive
+                      location.pathname.includes("/executiveSummary") || isActive
                         ? "bg-[#29166e] text-white"
                         : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
                     }`
@@ -134,7 +159,7 @@ export default function Sidebar() {
           <div className="mt-4">
             <button
               onClick={addSheet}
-              className="flex items-center justify-center w-full text-#29166e p-2 rounded-md hover:bg-blue-200 transition-all duration-300"
+              className="flex items-center justify-center w-full text-[#29166e] p-2 rounded-md hover:bg-blue-200 transition-all duration-300"
             >
               <PlusCircleIcon className="w-6 h-6 mr-2" />
               Tambah Sheet
@@ -142,6 +167,22 @@ export default function Sidebar() {
           </div>
         </div>
       </aside>
+
+      {/* Popup Modal */}
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
+            <h2 className="text-lg font-bold text-red-600 mb-4">Tidak Bisa Menghapus</h2>
+            <p className="text-gray-700 mb-4">Anda tidak bisa menghapus sheet terakhir.</p>
+            <button
+              onClick={() => setShowPopup(false)}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Overlay untuk Menutup Sidebar di Layar Kecil */}
       {isOpen && (
