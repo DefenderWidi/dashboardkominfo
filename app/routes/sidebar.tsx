@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { NavLink } from "@remix-run/react";
-import { HomeIcon, ChartBarIcon, SearchIcon, PlusCircleIcon } from "@heroicons/react/outline";
+import { HomeIcon, ChartBarIcon, SearchIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/outline";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [sheets, setSheets] = useState<string[]>([]);
 
-  // Tambahkan sheet baru
+  // Tambah sheet baru
   const addSheet = () => {
     const newSheetName = `Sheet ${sheets.length + 1}`;
     setSheets((prevSheets) => [...prevSheets, newSheetName]);
+  };
+
+  // Hapus sheet berdasarkan index
+  const removeSheet = (index: number) => {
+    setSheets((prevSheets) => prevSheets.filter((_, i) => i !== index));
   };
 
   return (
@@ -96,39 +101,45 @@ export default function Sidebar() {
             </ul>
           </nav>
 
-          {/* Tambah Sheet */}
-          <div className="mt-6">
-            <button
-              onClick={addSheet}
-              className="flex items-center w-full p-2 bg-[#29166e] text-white rounded-md transition-all duration-300 hover:bg-[#1f125e]"
-            >
-              <PlusCircleIcon className="w-6 h-6 mr-2" />
-              Tambah Sheet
-            </button>
-          </div>
-
           {/* Daftar Sheets */}
           <nav className="mt-4">
             <ul className="space-y-2">
               {sheets.map((sheet, index) => (
-                <li key={index}>
+                <li key={index} className="flex items-center justify-between">
                   <NavLink
                     to={`/executiveSummary/${sheet}`}
                     onClick={() => setIsOpen(false)}
                     className={({ isActive }) =>
-                      `flex items-center p-2 rounded-md transition-all duration-300 ${
+                      `flex-grow p-2 rounded-md transition-all duration-300 ${
                         isActive
                           ? "bg-[#29166e] text-white"
                           : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
                       }`
                     }
                   >
-                    <span>{sheet}</span>
+                    {sheet}
                   </NavLink>
+                  <button
+                    onClick={() => removeSheet(index)}
+                    className="text-red-500 hover:text-red-700 ml-2"
+                  >
+                    <TrashIcon className="w-5 h-5" />
+                  </button>
                 </li>
               ))}
             </ul>
           </nav>
+
+          {/* Tambah Sheet */}
+          <div className="mt-4">
+            <button
+              onClick={addSheet}
+              className="flex items-center justify-center w-full text-#29166e p-2 rounded-md hover:bg-blue-200 transition-all duration-300"
+            >
+              <PlusCircleIcon className="w-6 h-6 mr-2" />
+              Tambah Sheet
+            </button>
+          </div>
         </div>
       </aside>
 
