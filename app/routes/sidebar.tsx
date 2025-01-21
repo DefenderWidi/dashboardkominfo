@@ -165,11 +165,11 @@ export default function Sidebar() {
                 {sheet}
               </NavLink>
               <button
-                onClick={() => confirmDeleteSheet(index)}
-                className="text-red-500 hover:text-red-700 ml-2"
-              >
-                <TrashIcon className="w-5 h-5" />
-              </button>
+  onClick={() => confirmDeleteSheet(index)}
+  className="flex items-center justify-center p-2.5 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-md transition"
+>
+  <TrashIcon className="w-5 h-5" />
+</button>
             </li>
           ))}
         </ul>
@@ -181,7 +181,7 @@ export default function Sidebar() {
       <div className="mt-3 flex justify-center">
         <button
           onClick={addSheet}
-          className="flex items-center px-3 py-1 text-[#29166e] rounded-md hover:bg-blue-200 transition-all duration-300"
+          className="flex items-center px-3 py-1 text-[#29166e] rounded-md hover:bg-blue-100 transition-all duration-300"
           title="Tambah Sheet"
         >
           <PlusCircleIcon className="w-5 h-5 mr-2" />
