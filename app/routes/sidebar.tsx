@@ -75,122 +75,148 @@ export default function Sidebar() {
         </button>
       )}
 
-      {/* Sidebar */}
-      <aside
-        className={`fixed top-0 left-0 min-h-screen w-64 bg-white shadow-md p-4 z-40 transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 lg:static lg:flex lg:min-h-screen overflow-y-auto transition-transform duration-300`}
-      >
-        <div className="flex flex-col h-full">
-          {/* Logo Sidebar */}
-          <div className="flex items-center justify-center mb-2">
-            <img
-              src="/fotoheader.png"
-              alt="Logo"
-              className="w-50 h-50 object-contain"
-            />
-          </div>
+     {/* Sidebar */}
+<aside
+  className={`fixed top-0 left-0 min-h-screen w-64 bg-white shadow-md p-4 z-40 transform ${
+    isOpen ? "translate-x-0" : "-translate-x-full"
+  } lg:translate-x-0 lg:static lg:flex lg:min-h-screen overflow-y-auto transition-transform duration-300`}
+>
+  <div className="flex flex-col h-full">
+    {/* Logo Sidebar */}
+    <div className="flex items-center justify-center mb-2">
+      <img
+        src="/fotoheader.png"
+        alt="Logo"
+        className="w-50 h-50 object-contain"
+      />
+    </div>
 
-          {/* Menu Navigasi */}
-          <nav>
-            <ul className="space-y-4">
-              <li>
-                <NavLink
-                  to="/"
-                  onClick={() => setIsOpen(false)}
-                  className={({ isActive }) =>
-                    `flex items-center p-2 rounded-md transition-all duration-300 ${
-                      isActive
-                        ? "bg-[#29166e] text-white"
-                        : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
-                    }`
-                  }
-                >
-                  <HomeIcon className="w-6 h-6" />
-                  <span className="ml-2">Overview</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/search"
-                  onClick={() => setIsOpen(false)}
-                  className={({ isActive }) =>
-                    `flex items-center p-2 rounded-md transition-all duration-300 ${
-                      isActive
-                        ? "bg-[#29166e] text-white"
-                        : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
-                    }`
-                  }
-                >
-                  <SearchIcon className="w-6 h-6" />
-                  <span className="ml-2">Pencarian Data</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to={`/executiveSummary/${sheets[0] || "Sheet1"}`}
-                  onClick={handleExecutiveSummaryClick}
-                  className={({ isActive }) =>
-                    `flex items-center p-2 rounded-md transition-all duration-300 ${
-                      location.pathname.includes("/executiveSummary") || isActive
-                        ? "bg-[#29166e] text-white"
-                        : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
-                    }`
-                  }
-                >
-                  <ChartBarIcon className="w-6 h-6" />
-                  <span className="ml-2">Executive Summary</span>
-                </NavLink>
-              </li>
-            </ul>
-          </nav>
+    {/* Menu Navigasi */}
+    <nav>
+      <ul className="space-y-4">
+        <li>
+          <NavLink
+            to="/"
+            onClick={() => setIsOpen(false)}
+            className={({ isActive }) =>
+              `flex items-center p-2 rounded-md transition-all duration-300 ${
+                isActive
+                  ? "bg-[#29166e] text-white"
+                  : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+              }`
+            }
+          >
+            <HomeIcon className="w-6 h-6" />
+            <span className="ml-2">Overview</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/search"
+            onClick={() => setIsOpen(false)}
+            className={({ isActive }) =>
+              `flex items-center p-2 rounded-md transition-all duration-300 ${
+                isActive
+                  ? "bg-[#29166e] text-white"
+                  : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+              }`
+            }
+          >
+            <SearchIcon className="w-6 h-6" />
+            <span className="ml-2">Pencarian Data</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to={`/executiveSummary/${sheets[0] || "Sheet1"}`}
+            onClick={handleExecutiveSummaryClick}
+            className={({ isActive }) =>
+              `flex items-center p-2 rounded-md transition-all duration-300 ${
+                location.pathname.includes("/executiveSummary") || isActive
+                  ? "bg-[#29166e] text-white"
+                  : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+              }`
+            }
+          >
+            <ChartBarIcon className="w-6 h-6" />
+            <span className="ml-2">Executive Summary</span>
+          </NavLink>
+        </li>
+      </ul>
+    </nav>
 
-          {/* Daftar Sheets */}
-          {isSheetsInitialized && (
-            <nav className="mt-4">
-              <ul className="space-y-2">
-                {sheets.map((sheet, index) => (
-                  <li key={index} className="flex items-center justify-between">
-                    <NavLink
-                      to={`/executiveSummary/${sheet}`}
-                      onClick={() => setIsOpen(false)}
-                      className={({ isActive }) =>
-                        `flex-grow p-2 rounded-md transition-all duration-300 ${
-                          isActive
-                            ? "bg-[#29166e] text-white"
-                            : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
-                        }`
-                      }
-                    >
-                      {sheet}
-                    </NavLink>
-                    <button
-                      onClick={() => confirmDeleteSheet(index)}
-                      className="text-red-500 hover:text-red-700 ml-2"
-                    >
-                      <TrashIcon className="w-5 h-5" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          )}
-
-          {/* Tambah Sheet */}
-          {isSheetsInitialized && (
-            <div className="mt-3 flex justify-center">
-              <button
-                onClick={addSheet}
-                className="flex items-center px-3 py-1 text-[#29166e] rounded-md hover:bg-blue-200 transition-all duration-300"
-                title="Tambah Sheet"
+    {/* Daftar Sheets */}
+    {isSheetsInitialized && (
+      <nav className="mt-4">
+        <ul className="space-y-2">
+          {sheets.map((sheet, index) => (
+            <li key={index} className="flex items-center justify-between">
+              <NavLink
+                to={`/executiveSummary/${sheet}`}
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) =>
+                  `flex-grow p-2 rounded-md transition-all duration-300 ${
+                    isActive
+                      ? "bg-[#29166e] text-white"
+                      : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+                  }`
+                }
               >
-                <PlusCircleIcon className="w-5 h-5 mr-2" />
-                <span className="text-sm">Tambah Sheet</span>
+                {sheet}
+              </NavLink>
+              <button
+                onClick={() => confirmDeleteSheet(index)}
+                className="text-red-500 hover:text-red-700 ml-2"
+              >
+                <TrashIcon className="w-5 h-5" />
               </button>
-            </div>
-          )}
-        </div>
-      </aside>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
+    {/* Tambah Sheet */}
+    {isSheetsInitialized && (
+      <div className="mt-3 flex justify-center">
+        <button
+          onClick={addSheet}
+          className="flex items-center px-3 py-1 text-[#29166e] rounded-md hover:bg-blue-200 transition-all duration-300"
+          title="Tambah Sheet"
+        >
+          <PlusCircleIcon className="w-5 h-5 mr-2" />
+          <span className="text-sm">Tambah Sheet</span>
+        </button>
+      </div>
+    )}
+
+    {/* Spacer untuk menjaga layout */}
+    <div className="flex-grow"></div>
+
+    {/* Tombol Logout */}
+    <div className="mt-4">
+      <button
+        onClick={() => {
+          localStorage.removeItem("isAuthenticated");
+          navigate("/login", { replace: true });
+        }}
+        className="flex items-center w-full p-2 text-red-600 hover:bg-red-100 rounded-md transition"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M16 13v-2H7V8l-5 4l5 4v-3h9z" />
+          <path d="M19 3H9a1 1 0 0 0 0 2h10v14H9a1 1 0 1 0 0 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
+        </svg>
+        <span className="ml-2">Keluar</span>
+      </button>
+    </div>
+  </div>
+</aside>
+  
 
       {/* Modal Konfirmasi Hapus */}
       {showDeleteConfirm && (

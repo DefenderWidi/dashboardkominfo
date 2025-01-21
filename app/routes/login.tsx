@@ -37,7 +37,7 @@ export default function Login() {
 
         {/* Title */}
         <h2 className="text-2xl font-bold text-center text-blue-800 mb-6">
-          Selamat Datang kembali
+          Selamat Datang Kembali!
         </h2>
 
         {/* Login Form */}
