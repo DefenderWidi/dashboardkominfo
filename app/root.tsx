@@ -4,13 +4,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useParams,
+  useLocation,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 
 import "./tailwind.css";
 import Sidebar from "./routes/sidebar";
-import ExecutiveSummary from "./routes/executiveSummary"; // Pastikan path ini benar
 
 export const links: LinksFunction = () => [
   {
@@ -20,7 +19,8 @@ export const links: LinksFunction = () => [
 ];
 
 export default function Root() {
-  const { sheetName } = useParams(); // Ambil parameter sheetName dari URL
+  const location = useLocation();
+  const isLoginPage = location.pathname.startsWith("/login");
 
   return (
     <html lang="en" className="h-full">
@@ -30,19 +30,17 @@ export default function Root() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full bg-gray-100 text-gray-800 overflow-hidden">
-        <div className="h-full flex">
-          {/* Sidebar tetap di-root */}
-          <Sidebar />
-          <main className="flex-1 overflow-y-auto p-4">
-            {/* Render ExecutiveSummary jika sheetName ada, jika tidak gunakan Outlet */}
-            {sheetName ? (
-              <ExecutiveSummary sheetName={sheetName} />
-            ) : (
-              <Outlet />
-            )}
-          </main>
-        </div>
+      <body className="h-full bg-gray-100 text-gray-800">
+        {isLoginPage ? (
+          <Outlet /> // Render halaman login langsung
+        ) : (
+          <div className="h-full flex">
+            <Sidebar />
+            <main className="flex-1 overflow-y-auto p-4">
+              <Outlet /> {/* Render konten utama */}
+            </main>
+          </div>
+        )}
         <ScrollRestoration />
         <Scripts />
       </body>
