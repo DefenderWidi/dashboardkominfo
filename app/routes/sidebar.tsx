@@ -7,6 +7,7 @@ export default function Sidebar() {
   const [sheets, setSheets] = useState<string[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
   const [isSheetsInitialized, setIsSheetsInitialized] = useState(false); // Untuk menampilkan tombol tambah sheet
   const navigate = useNavigate();
@@ -56,9 +57,9 @@ export default function Sidebar() {
   const handleExecutiveSummaryClick = () => {
     if (!isSheetsInitialized) {
       setSheets(["Sheet1"]);
-      setIsSheetsInitialized(true); // Pastikan tidak diinisialisasi ulang
+      setIsSheetsInitialized(true);
     }
-    setIsOpen(false); // Tutup sidebar
+    setIsOpen(false);
   };
 
   return (
@@ -102,7 +103,7 @@ export default function Sidebar() {
               `flex items-center p-2 rounded-md transition-all duration-300 ${
                 isActive
                   ? "bg-[#29166e] text-white"
-                  : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+                  : "text-[#29166e] hover:bg-blue-100"
               }`
             }
           >
@@ -118,7 +119,7 @@ export default function Sidebar() {
               `flex items-center p-2 rounded-md transition-all duration-300 ${
                 isActive
                   ? "bg-[#29166e] text-white"
-                  : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
+                  : "text-[#29166e] hover:bg-blue-100"
               }`
             }
           >
@@ -127,20 +128,20 @@ export default function Sidebar() {
           </NavLink>
         </li>
         <li>
-          <NavLink
-            to={`/executiveSummary/${sheets[0] || "Sheet1"}`}
-            onClick={handleExecutiveSummaryClick}
-            className={({ isActive }) =>
-              `flex items-center p-2 rounded-md transition-all duration-300 ${
-                location.pathname.includes("/executiveSummary") || isActive
-                  ? "bg-[#29166e] text-white"
-                  : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
-              }`
-            }
-          >
-            <ChartBarIcon className="w-6 h-6" />
-            <span className="ml-2">Executive Summary</span>
-          </NavLink>
+        <NavLink
+  to={`/executiveSummary/${sheets[0] || "Sheet1"}`}
+  onClick={handleExecutiveSummaryClick}
+  className={() =>
+    `flex items-center p-2 rounded-md transition-all duration-300 ${
+      location.pathname.includes("/executiveSummary")
+        ? "bg-[#29166e] text-white"
+        : "text-[#29166e] hover:bg-blue-100"
+    }`
+  }
+>
+  <ChartBarIcon className="w-6 h-6" />
+  <span className="ml-2">Executive Summary</span>
+</NavLink>
         </li>
       </ul>
     </nav>
@@ -155,18 +156,18 @@ export default function Sidebar() {
                 to={`/executiveSummary/${sheet}`}
                 onClick={() => setIsOpen(false)}
                 className={({ isActive }) =>
-                  `flex-grow p-2 rounded-md transition-all duration-300 ${
-                    isActive
-                      ? "bg-[#29166e] text-white"
-                      : "text-[#29166e] hover:text-blue-500 hover:ring hover:ring-[#29166e]"
-                  }`
+                 `flex-grow w-full p-2 rounded-md transition-all duration-300 ${
+      isActive
+        ? "bg-[#29166e] text-white"
+        : "text-[#29166e] hover:bg-blue-100"
+    }`
                 }
               >
                 {sheet}
               </NavLink>
               <button
   onClick={() => confirmDeleteSheet(index)}
-  className="flex items-center justify-center p-2.5 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-md transition"
+  className="flex items-center justify-center p-2.5 text-red-500 hover:text-red-600 hover:bg-red-100 rounded-md  transition-all duration-300"
 >
   <TrashIcon className="w-5 h-5" />
 </button>
@@ -195,70 +196,93 @@ export default function Sidebar() {
 
     {/* Tombol Logout */}
     <div className="mt-4">
-      <button
-        onClick={() => {
-          localStorage.removeItem("isAuthenticated");
-          navigate("/login", { replace: true });
-        }}
-        className="flex items-center w-full p-2 text-red-600 hover:bg-red-100 rounded-md transition"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path d="M16 13v-2H7V8l-5 4l5 4v-3h9z" />
-          <path d="M19 3H9a1 1 0 0 0 0 2h10v14H9a1 1 0 1 0 0 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
-        </svg>
-        <span className="ml-2">Keluar</span>
-      </button>
-    </div>
+  <button
+    onClick={() => setShowLogoutConfirm(true)}
+    className="flex items-center w-full p-2 text-red-600 hover:text-red-700 hover:bg-red-100 rounded-md transition-all duration-300"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-6 h-6"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M16 13v-2H7V8l-5 4l5 4v-3h9z" />
+      <path d="M19 3H9a1 1 0 0 0 0 2h10v14H9a1 1 0 1 0 0 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
+    </svg>
+    <span className="ml-2">Keluar</span>
+  </button>
+</div>
   </div>
 </aside>
   
+    {/* Modal Konfirmasi Logout */}
+{showLogoutConfirm && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
+    <h2 className="text-lg font-bold text-red-600 mb-4">Keluar dari Akun</h2>
+<p className="text-gray-700 mb-5">Anda akan keluar dari akun ini. Apakah Anda yakin?</p>
+      <div className="flex justify-center space-x-4">
+        <button
+          onClick={() => setShowLogoutConfirm(false)}
+          className="px-5 py-2 border border-gray-700 text-gray-700 rounded-md hover:bg-gray-200 transition"
+        >
+          Batal
+        </button>
+        <button
+          onClick={() => {
+            localStorage.removeItem("isAuthenticated");
+            navigate("/login", { replace: true });
+          }}
+          className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+        >
+          Keluar
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
-      {/* Modal Konfirmasi Hapus */}
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
-            <h2 className="text-lg font-bold text-red-600 mb-4">Konfirmasi Hapus</h2>
-            <p className="text-gray-700 mb-4">
-              Apakah Anda yakin ingin menghapus sheet ini?
-            </p>
-            <div className="flex justify-center space-x-4">
-              <button
-                onClick={removeSheet}
-                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-              >
-                Hapus
-              </button>
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
-              >
-                Batal
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+   {/* Modal Konfirmasi Hapus */}
+{showDeleteConfirm && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
+    <h2 className="text-lg font-bold text-red-600 mb-4">Hapus Sheet</h2>
+<p className="text-gray-700 mb-5">Sheet ini akan dihapus secara permanen. Apakah Anda yakin?</p>
+      <div className="flex justify-center space-x-4">
+        <button
+          onClick={() => setShowDeleteConfirm(false)}
+          className="px-5 py-2 border border-gray-700 text-gray-700 rounded-md hover:bg-gray-200 transition"
+        >
+          Batal
+        </button>
+        <button
+          onClick={removeSheet}
+          className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+        >
+          Hapus
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
-      {/* Popup Modal */}
-      {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
-            <h2 className="text-lg font-bold text-red-600 mb-4">Tidak Bisa Menghapus</h2>
-            <p className="text-gray-700 mb-4">Anda tidak bisa menghapus sheet terakhir.</p>
-            <button
-              onClick={() => setShowPopup(false)}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      )}
+     {/* Modal Sheets Terakhir */}
+{showPopup && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
+      <h2 className="text-lg font-bold text-red-600 mb-4">Aksi Tidak Dapat Dilakukan</h2>
+      <p className="text-gray-700 mb-5">
+        Sheet terakhir tidak dapat dihapus karena setidaknya satu sheet harus tersedia.
+      </p>
+      <button
+        onClick={() => setShowPopup(false)}
+        className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+      >
+        Mengerti
+      </button>
+    </div>
+  </div>
+)}
 
       {/* Overlay untuk Menutup Sidebar di Layar Kecil */}
       {isOpen && (
