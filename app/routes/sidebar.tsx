@@ -208,7 +208,7 @@ export default function Sidebar() {
               }}
               title={sheet}
             >
-              {sheet.length > 16 ? `${sheet.substring(0, 1)}...` : sheet}
+              {sheet.length > 15 ? `${sheet.substring(0, 15)}...` : sheet}
             </NavLink>
           )}
           {/* Tombol Aksi */}
@@ -231,7 +231,7 @@ export default function Sidebar() {
     width="20"
     height="20"
     viewBox="0 0 24 24"
-    fill="#01458e"
+    fill="#29166e"
   >
     <path d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" />
   </svg>
@@ -269,7 +269,7 @@ export default function Sidebar() {
                     width="20"
                     height="20"
                     viewBox="0 0 24 24"
-                    fill="#01458e"
+                    fill="#29166e"
                   >
                     <path d="M16.035 3.015a3 3 0 0 1 4.099-.135l.144.135l.707.707a3 3 0 0 1 .135 4.098l-.135.144L9.773 19.177a1.5 1.5 0 0 1-.562.354l-.162.047l-4.454 1.028a1 1 0 0 1-1.22-1.088l.02-.113l1.027-4.455a1.5 1.5 0 0 1 .29-.598l.111-.125zm-.707 3.535l-8.99 8.99l-.636 2.758l2.758-.637l8.99-8.99l-2.122-2.12Zm3.536-2.121a1 1 0 0 0-1.32-.083l-.094.083l-.708.707l2.122 2.121l.707-.707a1 1 0 0 0 .083-1.32l-.083-.094z" />
                   </svg>
