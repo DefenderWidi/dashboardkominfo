@@ -116,59 +116,59 @@ export default function Sidebar() {
             />
           </div>
 
-          {/* Menu Navigasi */}
-          <nav>
-            <ul className="space-y-4">
-              <li>
-                <NavLink
-                  to="/"
-                  onClick={() => setIsOpen(false)}
-                  className={({ isActive }) =>
-                    `flex items-center p-2 rounded-md transition-all duration-300 ${
-                      isActive
-                        ? "bg-[#29166e] text-white"
-                        : "text-[#29166e] hover:bg-blue-100"
-                    }`
-                  }
-                >
-                  <HomeIcon className="w-6 h-6" />
-                  <span className="ml-2">Overview</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/search"
-                  onClick={() => setIsOpen(false)}
-                  className={({ isActive }) =>
-                    `flex items-center p-2 rounded-md transition-all duration-300 ${
-                      isActive
-                        ? "bg-[#29166e] text-white"
-                        : "text-[#29166e] hover:bg-blue-100"
-                    }`
-                  }
-                >
-                  <SearchIcon className="w-6 h-6" />
-                  <span className="ml-2">Pencarian Data</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to={`/executiveSummary/${sheets[0] || "Sheet1"}`}
-                  onClick={handleExecutiveSummaryClick}
-                  className={() =>
-                    `flex items-center p-2 rounded-md transition-all duration-300 ${
-                      location.pathname.includes("/executiveSummary")
-                        ? "bg-[#29166e] text-white"
-                        : "text-[#29166e] hover:bg-blue-100"
-                    }`
-                  }
-                >
-                  <ChartBarIcon className="w-6 h-6" />
-                  <span className="ml-2">Executive Summary</span>
-                </NavLink>
-              </li>
-            </ul>
-          </nav>
+      {/* Menu Navigasi */}
+<nav>
+  <ul className="space-y-4">
+    <li>
+      <NavLink
+        to="/"
+        onClick={() => setIsOpen(false)}
+        className={({ isActive }) =>
+          `flex items-center p-2 rounded-md transition-all duration-300 ${
+            isActive
+              ? "bg-[#29166e] text-white"
+              : "text-[#29166e] hover:bg-blue-100"
+          }`
+        }
+      >
+        <HomeIcon className="w-6 h-6" strokeWidth="2.5" /> 
+        <span className="ml-3 font-bold">Beranda</span>
+      </NavLink>
+    </li>
+    <li>
+      <NavLink
+        to="/search"
+        onClick={() => setIsOpen(false)}
+        className={({ isActive }) =>
+          `flex items-center p-2 rounded-md transition-all duration-300 ${
+            isActive
+              ? "bg-[#29166e] text-white"
+              : "text-[#29166e] hover:bg-blue-100"
+          }`
+        }
+      >
+        <SearchIcon className="w-6 h-6" strokeWidth="2.5" />
+        <span className="ml-3 font-bold">Pencarian Data</span>
+      </NavLink>
+    </li>
+    <li>
+      <NavLink
+        to={`/executiveSummary/${sheets[0] || "Sheet1"}`}
+        onClick={handleExecutiveSummaryClick}
+        className={() =>
+          `flex items-center p-2 rounded-md transition-all duration-300 ${
+            location.pathname.includes("/executiveSummary")
+              ? "bg-[#29166e] text-white"
+              : "text-[#29166e] hover:bg-blue-100"
+          }`
+        }
+      >
+        <ChartBarIcon className="w-6 h-6" strokeWidth="2.5" />
+        <span className="ml-3 font-bold">Executive Summary</span>
+      </NavLink>
+    </li>
+  </ul>
+</nav>
 
 {/* Daftar Sheets */}
 {isSheetsInitialized && (
@@ -208,7 +208,7 @@ export default function Sidebar() {
               }}
               title={sheet}
             >
-              {sheet.length > 14 ? `${sheet.substring(0, 14)}...` : sheet}
+              {sheet.length > 16 ? `${sheet.substring(0, 1)}...` : sheet}
             </NavLink>
           )}
           {/* Tombol Aksi */}
@@ -238,7 +238,7 @@ export default function Sidebar() {
 </button>
                 <button
   onClick={cancelRename}
-  className="h-10 px-0.5 text-red-500 hover:text-red-600 hover:bg-red-100 hover:py-2.5 rounded-md transition-all duration-300"
+  className="h-10 px-0.5 text-red-500 hover:text-red-600 hover:bg-red-50 hover:py-2.5 rounded-md transition-all duration-300"
   title="Batal"
 >
   <svg
@@ -276,7 +276,7 @@ export default function Sidebar() {
                 </button>
                 <button
                   onClick={() => confirmDeleteSheet(index)}
-                  className="h-10 px-1 text-red-500 hover:text-red-600 hover:bg-red-100 hover:py-2.5 rounded-md transition-all duration-300"
+                  className="h-10 px-1 text-red-500 hover:text-red-600 hover:bg-red-50 hover:py-2.5 rounded-md transition-all duration-300"
                   title="Hapus"
                 >
                   <TrashIcon className="w-4 h-4" />
@@ -321,24 +321,27 @@ export default function Sidebar() {
           {/* Spacer untuk menjaga layout */}
           <div className="flex-grow"></div>
 
-          {/* Tombol Logout */}
-          <div className="mt-4">
-            <button
-              onClick={() => setShowLogoutConfirm(true)}
-              className="flex items-center w-full p-2 text-red-600 hover:text-red-700 hover:bg-red-100 rounded-md transition-all duration-300"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M16 13v-2H7V8l-5 4l5 4v-3h9z" />
-                <path d="M19 3H9a1 1 0 0 0 0 2h10v14H9a1 1 0 1 0 0 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
-              </svg>
-              <span className="ml-2">Keluar</span>
-            </button>
-          </div>
+        {/* Tombol Logout */}
+<div className="mt-4">
+  <button
+    onClick={() => setShowLogoutConfirm(true)}
+    className="flex items-center w-full p-2 text-red-600 hover:text-red-700 hover:bg-red-100 rounded-md transition-all duration-300"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-6 h-6"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2.5"
+    >
+      <path d="m17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1" />
+    </svg>
+    <span className="ml-2 font-bold">Keluar</span> 
+  </button>
+</div>
         </div>
       </aside>
 
@@ -351,7 +354,7 @@ export default function Sidebar() {
             <div className="flex justify-center space-x-4">
               <button
                 onClick={() => setShowLogoutConfirm(false)}
-                className="px-5 py-2 border border-gray-700 text-gray-700 rounded-md hover:bg-gray-200 transition"
+                className="px-10 py-2 border border-gray-700 text-gray-700 rounded-md hover:bg-gray-200 transition-all duration-300"
               >
                 Batal
               </button>
@@ -360,7 +363,7 @@ export default function Sidebar() {
                   localStorage.removeItem("isAuthenticated");
                   navigate("/login", { replace: true });
                 }}
-                className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+                className="px-10 py-2 bg-red-600 text-white rounded-md hover:bg-red-800 transition-all duration-300"
               >
                 Keluar
               </button>
@@ -378,13 +381,13 @@ export default function Sidebar() {
             <div className="flex justify-center space-x-4">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="px-5 py-2 border border-gray-700 text-gray-700 rounded-md hover:bg-gray-200 transition"
+                className="px-10 py-2 border border-gray-700 text-gray-700 rounded-md hover:bg-gray-200 transition-all duration-300"
               >
                 Batal
               </button>
               <button
                 onClick={removeSheet}
-                className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+                className="px-10 py-2 bg-red-600 text-white rounded-md hover:bg-red-800 transition-all duration-300"
               >
                 Hapus
               </button>
@@ -403,7 +406,7 @@ export default function Sidebar() {
       </p>
       <button
         onClick={() => setShowEmptyNameModal(false)}
-        className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+        className="px-10 py-2 bg-red-600 text-white rounded-md hover:bg-red-800 transition-all duration-300"
       >
         Mengerti
       </button>
@@ -421,7 +424,7 @@ export default function Sidebar() {
             </p>
             <button
               onClick={() => setShowPopup(false)}
-              className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+              className="px-10 py-2 bg-red-600 text-white rounded-md hover:bg-red-800 transition-all duration-300"
             >
               Mengerti
             </button>

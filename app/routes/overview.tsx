@@ -18,22 +18,22 @@ export default function Overview() {
           {/* Header Section */}
           <div className="text-center px-4">
             <h1 className="text-5xl font-extrabold text-white drop-shadow-lg">
-              Welcome to{" "}
-              <span className="text-[#90caf9]">KOMDIGI</span> Dashboard
+              Selamat Datang di{" "}
+              <span className="text-[#a8e5ff]">KOMDIGI</span> Dashboard
             </h1>
-            <p className="text-lg text-[#CECECE] mt-4">
-              Ubah data menjadi informasi yang bermakna hanya dalam hitungan detik.
-            </p>
+            <p className="text-lg text-[#CECECE] mt-4 italic">
+  <span className="text-[#a8e5ff]">Satu Data, Satu Aksi</span>: Persembahan dari Kab. Semarang untuk <span className="text-[#a8e5ff]">Menuju Serasi</span>
+</p>
           </div>
         </section>
 
         {/* Kelebihan dan Fungsi */}
         <section className="w-full py-12 flex flex-col items-center">
           <h2 className="text-3xl font-bold text-white text-center">
-            Kelebihan dan Fungsi
+          <span className="text-[#a8e5ff]">Solusi Terbaik</span> untuk Data Anda
           </h2>
-          <p className="text-md text-[#CECECE] mt-2 text-center">
-            Kenapa Anda harus memilih KOMDIGI Dashboard?
+          <p className="text-md text-[#CECECE] mt-2 text-center italic">
+          Mengapa <span className="text-[#a8e5ff]">KOMDIGI</span> Dashboard adalah solusi terbaik untuk kebutuhan analisis data Anda?
           </p>
 
 {/* Grid of Cards */}
@@ -93,10 +93,10 @@ export default function Overview() {
           {/* Informative Section */}
           <div className="text-center px-4">
             <h2 className="text-3xl font-bold text-white drop-shadow-lg">
-              Sesuaikan bentuk grafik sesuai kebutuhan Anda!
+            <span className="text-[#a8e5ff]">Satu Aksi,</span> Beragam Grafik
             </h2>
-            <p className="text-md text-[#CECECE] mt-2">
-              Beragam grafik interaktif yang membantu Anda memahami data lebih baik.
+            <p className="text-md text-[#CECECE] mt-2 italic">
+            Transformasikan data Anda menjadi beragam grafik hanya dengan  <span className="text-[#a8e5ff]">Satu Aksi</span> sederhana
             </p>
           </div>
 
