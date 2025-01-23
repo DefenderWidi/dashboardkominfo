@@ -295,7 +295,7 @@ export default function Sidebar() {
             <div className="mt-0.5 flex justify-center">
           <button
   onClick={addSheet}
-  className="flex items-center px-3 py-1 text-[#29166e] rounded-md hover:bg-blue-100 transition-all duration-300"
+  className="flex items-center px-3 py-2 text-[#29166e] rounded-md hover:bg-blue-100 transition-all duration-300"
   title="Tambah Sheet"
 >
   <svg
