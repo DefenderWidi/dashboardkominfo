@@ -72,7 +72,7 @@ export default function Login() {
         </div>
 
         {/* Title */}
-        <h2 className="text-2xl font-bold text-center text-blue-800 mb-3 sm:mb-3">
+        <h2 className="text-2xl font-bold text-center text-[#01458e] mb-3 sm:mb-3">
           {isSignUp ? "Buat Akun Baru" : "Selamat Datang Kembali!"}
         </h2>
 
@@ -87,7 +87,7 @@ export default function Login() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-white text-black border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 px-3 py-2"
+              className="w-full bg-white text-black border border-gray-400 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 px-3 py-2"
               placeholder="Masukkan email Anda"
               required
             />
@@ -106,7 +106,7 @@ export default function Login() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-white text-black border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 px-3 py-2"
+                className="w-full bg-white text-black border border-gray-400 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 px-3 py-2"
                 placeholder="Masukkan kata sandi Anda"
                 required
               />
@@ -118,8 +118,8 @@ export default function Login() {
                 {showPassword ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
+                    width="20"
+                    height="20"
                     viewBox="0 0 16 16"
                     className="text-gray-500 hover:text-gray-800"
                   >
@@ -131,8 +131,8 @@ export default function Login() {
                 ) : (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
+                    width="20"
+                    height="20"
                     viewBox="0 0 16 16"
                     className="text-gray-500 hover:text-gray-800"
                   >
@@ -148,7 +148,7 @@ export default function Login() {
             {/* Lupa Kata Sandi (Hanya untuk Login) */}
             {!isSignUp && (
               <div className="mt-1 text-right">
-                <a href="#" className="text-sm text-blue-600 hover:underline">
+                <a href="#" className="text-sm text-[#01458e] hover:underline">
                   Lupa Kata Sandi?
                 </a>
               </div>
@@ -170,7 +170,7 @@ export default function Login() {
         id="confirm-password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
-        className="w-full bg-white text-black border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 px-3 py-2"
+        className="w-full bg-white text-black border border-gray-400 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 px-3 py-2"
         placeholder="Ulangi kata sandi Anda"
         required
       />
@@ -182,8 +182,8 @@ export default function Login() {
         {showPassword ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
+            width="20"
+            height="20"
             viewBox="0 0 16 16"
             className="text-gray-500 hover:text-gray-800"
           >
@@ -195,8 +195,8 @@ export default function Login() {
         ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
+            width="20"
+            height="20"
             viewBox="0 0 16 16"
             className="text-gray-500 hover:text-gray-800"
           >
@@ -213,7 +213,7 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-md py-2 sm:py-3 mt-2 sm:mt-3 hover:from-blue-600 hover:to-blue-700 focus:ring focus:ring-blue-200"
+            className="w-full bg-gradient-to-r from-[#0792db] to-[#01458e] text-white font-medium rounded-md py-2 sm:py-3 mt-2 sm:mt-3 hover:from-[#01458e] hover:to-[#0792db] focus:ring focus:ring-blue-200 transition-all duration-300"
           >
             {isSignUp ? "Daftar" : "Login"}
           </button>
@@ -228,7 +228,7 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => setIsSignUp(false)}
-                  className="text-blue-600 hover:underline"
+                  className="text-[#01458e] hover:underline"
                 >
                   Login di sini
                 </button>
@@ -239,7 +239,7 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => setIsSignUp(true)}
-                  className="text-blue-600 hover:underline"
+                  className="text-[#01458e] hover:underline"
                 >
                   Buat di sini
                 </button>

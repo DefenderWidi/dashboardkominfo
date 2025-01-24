@@ -1,4 +1,5 @@
 import Showcase from "./showcase";
+import { motion } from "framer-motion";
 
 export default function Overview() {
   return (
@@ -16,17 +17,23 @@ export default function Overview() {
         {/* Bagian Pertama */}
         <section className="h-screen w-full flex flex-col justify-center items-center">
           {/* Header Section */}
-          <div className="text-center px-4">
+          <motion.div
+            className="text-center px-4"
+            initial={{ opacity: 0, x: -120 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          >
             <h1 className="text-5xl font-extrabold text-white drop-shadow-lg">
               Selamat Datang di{" "}
               <span className="text-[#a8e5ff]">KOMDIGI</span> Dashboard
             </h1>
             <p className="text-lg text-[#CECECE] mt-4 italic">
-  <span className="text-[#a8e5ff]">Satu Data, Satu Aksi</span>: Persembahan dari Kabupaten Semarang <span className="text-[#a8e5ff]">Menuju Serasi</span>
-</p>
-          </div>
+              <span className="text-[#a8e5ff]">Satu Data, Satu Aksi</span>: Persembahan dari Kabupaten Semarang{" "}
+              <span className="text-[#a8e5ff]">Menuju Serasi</span>
+            </p>
+          </motion.div>
         </section>
-
+  
         {/* Kelebihan dan Fungsi */}
         <section className="w-full py-12 flex flex-col items-center">
           <h2 className="text-3xl font-bold text-white text-center">
