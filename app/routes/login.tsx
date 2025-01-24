@@ -13,43 +13,78 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (email === "admin@example.com" && password === "password") {
-      toast.success("Login berhasil! Mengarahkan Anda ke halaman utama...", {
-        duration: 2500,
+  
+    try {
+      const response = await fetch(new URL("/auth", window.location.origin).toString(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, mode: "login" }), // Tambahkan 'mode: login'
       });
-      document.cookie = "isAuthenticated=true; path=/; max-age=3600";
-      setTimeout(() => {
-        navigate("/", { replace: true });
-      }, 3000);
-    } else {
-      toast.error("Email atau password salah. Coba lagi!", {
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        toast.success("Login berhasil! Mengarahkan Anda ke halaman utama...", {
+          duration: 2500,
+        });
+        document.cookie = `isAuthenticated=true; path=/; max-age=3600`;
+        setTimeout(() => {
+          navigate("/", { replace: true });
+        }, 3000);
+      } else {
+        toast.error(data.error || "Terjadi kesalahan. Coba lagi.", {
+          duration: 3000,
+        });
+      }
+    } catch (error) {
+      toast.error("Gagal terhubung ke server. Coba lagi nanti.", {
         duration: 3000,
       });
     }
   };
-
+  
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     if (password !== confirmPassword) {
       toast.error("Kata sandi dan ulangi kata sandi tidak cocok!", {
         duration: 3000,
       });
       return;
     }
-
-    // Simulasikan proses pendaftaran akun
-    toast.success("Akun berhasil dibuat! Silakan login.", {
-      duration: 3000,
-    });
-
-    // Reset state untuk kembali ke halaman login
-    setIsSignUp(false);
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-  };
+  
+    try {
+      const response = await fetch(new URL("/auth", window.location.origin).toString(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, mode: "register" }), // Tambahkan 'mode: register'
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        toast.success("Akun berhasil dibuat! Silakan login.", {
+          duration: 3000,
+        });
+        setIsSignUp(false);
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+      } else {
+        toast.error(data.error || "Terjadi kesalahan. Coba lagi.", {
+          duration: 3000,
+        });
+      }
+    } catch (error) {
+      toast.error("Gagal terhubung ke server. Coba lagi nanti.", {
+        duration: 3000,
+      });
+    }
+  };  
 
   return (
     <div
