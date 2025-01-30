@@ -1,9 +1,10 @@
 import { json } from "@remix-run/node";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import db from '~/db.server';
 
 // Simulasi database dalam memori
-const users: { email: string; password: string }[] = [];
+// const users: { email: string; password: string }[] = [];
 
 // Ekspor action untuk menangani POST request
 export const action = async ({ request }: { request: Request }) => {
@@ -16,33 +17,26 @@ export const action = async ({ request }: { request: Request }) => {
     }
 
     if (mode === "register") {
-      if (users.find((user) => user.email === email)) {
+      const existingUser = await db.user.findUnique({ where: { email } });
+      if (existingUser) {
         return json({ error: "Email sudah digunakan" }, { status: 400 });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      users.push({ email, password: hashedPassword });
+      await db.user.create({ data: { email, password: hashedPassword } });
 
       return json({ message: "Pendaftaran berhasil" }, { status: 201 });
     } else if (mode === "login") {
-      const user = users.find((u) => u.email === email);
-      if (!user) {
-        return json({ error: "Email tidak ditemukan" }, { status: 401 });
+      const user = await db.user.findUnique({ where: { email } });
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        return json({ error: "Email atau password salah" }, { status: 400 });
       }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-      if (!isPasswordValid) {
-        return json({ error: "Password salah" }, { status: 401 });
-      }
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
 
-      const token = jwt.sign({ email }, "SECRET_KEY", { expiresIn: "1h" });
-
-      return json({ message: "Login berhasil", token }, { status: 200 });
+      return json({ token }, { status: 200 });
     }
-
-    return json({ error: "Mode tidak valid" }, { status: 400 });
   } catch (error) {
-    console.error(error);
-    return json({ error: "Terjadi kesalahan pada server" }, { status: 500 });
+    return json({ error: "Terjadi kesalahan" }, { status: 500 });
   }
 };
