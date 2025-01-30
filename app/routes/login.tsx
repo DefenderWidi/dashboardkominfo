@@ -2,14 +2,17 @@ import { useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
+import Captcha from "./captcha";
+
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false); // State untuk toggle antara Login dan Buat Akun
-  const [confirmPassword, setConfirmPassword] = useState(""); // Untuk "Ulangi Kata Sandi"
+  const [isSignUp, setIsSignUp] = useState(false); 
+  const [confirmPassword, setConfirmPassword] = useState(""); 
+  const [captchaVerified, setCaptchaVerified] = useState(false);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -107,7 +110,7 @@ export default function Login() {
         </div>
 
         {/* Title */}
-        <h2 className="text-2xl font-bold text-center text-[#01458e] mb-3 sm:mb-3">
+        <h2 className="text-2xl font-bold text-center text-[#01458e] -mt-5 mb-2 sm:mb-3">
           {isSignUp ? "Buat Akun Baru" : "Selamat Datang Kembali!"}
         </h2>
 
@@ -246,16 +249,27 @@ export default function Login() {
   </div>
 )}
 
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-[#0792db] to-[#01458e] text-white font-medium rounded-md py-2 sm:py-3 mt-2 sm:mt-3 hover:from-[#01458e] hover:to-[#0792db] focus:ring focus:ring-blue-200 transition-all duration-300"
-          >
-            {isSignUp ? "Daftar" : "Login"}
-          </button>
+    {/* CAPTCHA hanya muncul saat mode login */}
+{!isSignUp && (
+  <div className="mb-3">
+    <Captcha onVerify={(isValid) => setCaptchaVerified(isValid)} />
+  </div>
+)}
+
+{/* Button Login atau Sign Up */}
+<button
+  type="submit"
+  className={`w-full bg-gradient-to-r from-[#0792db] to-[#01458e] text-white font-medium rounded-md py-2 sm:py-3 mt-2 sm:mt-3 ${
+    (!isSignUp && !captchaVerified) ? "opacity-50 cursor-not-allowed" : "hover:from-[#01458e] hover:to-[#0792db] focus:ring focus:ring-blue-200"
+  } transition-all duration-300`}
+  disabled={!isSignUp && !captchaVerified}
+>
+  {isSignUp ? "Daftar" : "Login"}
+</button>
         </form>
 
         {/* Footer */}
-        <div className="mt-4 sm:mt-6 text-center space-y-2 sm:space-y-3">
+        <div className="-mb-2 mt-3 sm:mt-4 text-center space-y-1 sm:space-y-2">
           <p className="text-sm text-gray-700">
             {isSignUp ? (
               <>
