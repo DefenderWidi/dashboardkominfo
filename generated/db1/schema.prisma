@@ -1,0 +1,15 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL_1")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/db1" // Output Prisma Client di folder terpisah
+}
+
+model JsonFile {
+  id         Int      @id @default(autoincrement())
+  data       Json
+  uploadedAt DateTime @default(now())
+}

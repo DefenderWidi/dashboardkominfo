@@ -1,35 +1,43 @@
 import React, { useState, useEffect } from "react";
 
-// Definisikan tipe data
+// Definisikan tipe data dari database
 type DataType = {
   id: number;
-  name: string;
+  fileName: string; // Sesuaikan dengan database
 };
 
 export default function Search() {
   const [searchTerm, setSearchTerm] = useState<string>(""); // Tipe string
-  const [data, setData] = useState<DataType[]>([]); // Tipe array dengan struktur DataType
-  const [filteredData, setFilteredData] = useState<DataType[]>([]); // Sama seperti data
+  const [data, setData] = useState<DataType[]>([]); // Data dari database
+  const [filteredData, setFilteredData] = useState<DataType[]>([]); // Data yang difilter
+  const [loading, setLoading] = useState<boolean>(true); // Status loading
+  const [error, setError] = useState<string | null>(null); // Error state
 
-  // Dummy data
-  const dummyData: DataType[] = [
-    { id: 1, name: "File A" },
-    { id: 2, name: "File B" },
-    { id: 3, name: "File C" },
-  ];
-
+  // Fetch data dari API saat pertama kali render
   useEffect(() => {
-    // Simulate fetching data from API
-    setTimeout(() => {
-      setData(dummyData);
-    }, 1000); // Simulate delay
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/files"); // Endpoint API dari files.ts
+        if (!response.ok) throw new Error("Gagal mengambil data");
+
+        const result: DataType[] = await response.json();
+        setData(result);
+        setFilteredData(result);
+      } catch (err) {
+        setError("Gagal memuat data. Coba lagi nanti.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
+  // Filter data berdasarkan input pencarian
   useEffect(() => {
-    // Filter data based on search term
     if (searchTerm) {
       const results = data.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        item.fileName.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredData(results);
     } else {
@@ -49,12 +57,6 @@ export default function Search() {
 
       {/* Search Box */}
       <form className="max-w-md mx-auto">
-        <label
-          htmlFor="default-search"
-          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-        >
-          Search
-        </label>
         <div className="relative">
           <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <svg
@@ -75,58 +77,51 @@ export default function Search() {
           </div>
           <input
             type="search"
-            id="default-search"
             className="block w-full p-4 ps-10 text-sm text-gray-900 border border-[#01458e] rounded-lg bg-gray-50 focus:ring-[#01458e] focus:border-[#01458e]"
             placeholder="Cari file..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             required
           />
-          <button
-            type="submit"
-            className="text-white absolute end-2.5 bottom-2.5 bg-[#01458e] hover:bg-[#01346b] focus:ring-4 focus:outline-none focus:ring-[#01458e] font-medium rounded-lg text-sm px-4 py-2"
-            onClick={(e) => e.preventDefault()} // Prevent page reload
-          >
-            Search
-          </button>
         </div>
       </form>
 
-     {/* Tabel Data */}
-<div className="overflow-x-auto mt-6">
-  <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
-    <thead>
-      <tr className="bg-[#01458e] text-white">
-        <th className="py-2 px-4 text-left">No</th>
-        <th className="py-2 px-4 text-left">Nama File</th>
-      </tr>
-    </thead>
-    <tbody>
-      {filteredData.length > 0 ? (
-        filteredData.map((item, index) => (
-          <tr
-            key={item.id}
-            className={`${
-              index % 2 === 0 ? "bg-gray-100" : "bg-white"
-            } border-t border-gray-300`}
-          >
-            <td className="py-2 px-4">{index + 1}</td>
-            <td className="py-2 px-4">{item.name}</td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td
-            colSpan={2}
-            className="text-center py-4 text-gray-500 bg-white"
-          >
-            Data tidak ditemukan
-          </td>
-        </tr>
+      {/* Status Loading atau Error */}
+      {loading && <p className="text-center text-gray-500 mt-4">Memuat data...</p>}
+      {error && <p className="text-center text-red-500 mt-4">{error}</p>}
+
+      {/* Tabel Data */}
+      {!loading && !error && (
+        <div className="overflow-x-auto mt-6">
+          <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+            <thead>
+              <tr className="bg-[#01458e] text-white">
+                <th className="py-2 px-4 text-left">No</th>
+                <th className="py-2 px-4 text-left">Nama File</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredData.length > 0 ? (
+                filteredData.map((item, index) => (
+                  <tr
+                    key={item.id}
+                    className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"} border-t border-gray-300`}
+                  >
+                    <td className="py-2 px-4">{index + 1}</td>
+                    <td className="py-2 px-4">{item.fileName}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={2} className="text-center py-4 text-gray-500 bg-white">
+                    Data tidak ditemukan
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       )}
-    </tbody>
-  </table>
-</div>
     </div>
   );
 }

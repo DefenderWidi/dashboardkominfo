@@ -5,6 +5,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../generated/db1" // Output Prisma Client di folder terpisah
 }
 
 model JsonFile {
