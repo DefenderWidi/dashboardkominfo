@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import db from '~/db.server';
+import prisma from '~/db.server';
 
 // Simulasi database dalam memori
 // const users: { email: string; password: string }[] = [];
@@ -17,17 +17,17 @@ export const action = async ({ request }: { request: Request }) => {
     }
 
     if (mode === "register") {
-      const existingUser = await db.user.findUnique({ where: { email } });
+      const existingUser = await prisma.user.findUnique({ where: { email } });
       if (existingUser) {
         return json({ error: "Email sudah digunakan" }, { status: 400 });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      await db.user.create({ data: { email, password: hashedPassword } });
+      await prisma.user.create({ data: { email, password: hashedPassword } });
 
       return json({ message: "Pendaftaran berhasil" }, { status: 201 });
     } else if (mode === "login") {
-      const user = await db.user.findUnique({ where: { email } });
+      const user = await prisma.user.findUnique({ where: { email } });
       if (!user || !(await bcrypt.compare(password, user.password))) {
         return json({ error: "Email atau password salah" }, { status: 400 });
       }
