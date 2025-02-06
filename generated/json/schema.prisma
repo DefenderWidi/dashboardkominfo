@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/json" // Pastikan ini benar
+}
+
+datasource jsonDb {
+  provider = "mysql"
+  url      = env("DATABASE_JSON_URL")
+}
+
+model JsonFile {
+  id          Int      @id @default(autoincrement())
+  file_name   String
+  content     Json
+  uploaded_at DateTime @default(now())
+
+  @@map("json_files")
+}

@@ -41,14 +41,15 @@ export default function ExecutiveSummary({ sheetName }: { sheetName?: string }) 
     localStorage.setItem("uploadHistory", JSON.stringify(history));
   }, [history]);
 
+  const [showModal, setShowModal] = useState(false);
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
-
+  
     if (fileData.length >= 3) {
-      alert("Maksimal 3 file dapat diunggah.");
+      setShowModal(true);
       return;
-    }
+    }  
 
     Array.from(files).forEach((file) => {
       const reader = new FileReader();
@@ -132,8 +133,18 @@ export default function ExecutiveSummary({ sheetName }: { sheetName?: string }) 
   };
 
   const removeFile = (index: number) => {
-    setFileData((prev) => prev.filter((_, i) => i !== index));
+    setFileData((prev) => {
+      const newData = prev.filter((_, i) => i !== index);
+      return newData;
+    });
+  
+    setHistory((prev) => {
+      const newHistory = prev.filter((_, i) => i !== index);
+      localStorage.setItem("uploadHistory", JSON.stringify(newHistory));
+      return newHistory;
+    });
   };
+  
 
   return (
     <div className="p-6 w-full bg-white rounded-lg shadow-md">
@@ -168,34 +179,40 @@ export default function ExecutiveSummary({ sheetName }: { sheetName?: string }) 
         </p>
       </form>
 
-      {/* History Section */}
-      <div className="mt-6">
-        <h2 className="text-xl font-semibold text-[#29166e]">Riwayat File</h2>
-        <ul className="list-disc pl-5 mt-2 text-gray-700">
-          {history.map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
-      </div>
+     {/* History Section */}
+<div className="mt-6">
+  <h2 className="text-xl font-semibold text-[#29166e]">Riwayat File</h2>
+  <div className="mt-2 max-h-28 overflow-y-auto border border-gray-300 rounded-md p-2">
+    <ul className="list-disc pl-5 text-gray-700">
+      {history.slice(-3).map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  </div>
+</div>
 
-      {/* Display Files */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-        {fileData.map((file, index) => (
-          <div
-            key={index}
-            className="bg-gray-50 p-4 rounded-lg border border-gray-300 shadow-lg hover:shadow-2xl transition-shadow"
-          >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-[#29166e]">
-                File {index + 1}
-              </h3>
-              <button
-                className="text-red-500 hover:text-red-700"
-                onClick={() => removeFile(index)}
-              >
-                Hapus
-              </button>
-            </div>
+     {/* Display Files */}
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+  {fileData.map((file, index) => (
+    <div
+      key={index}
+      className="bg-gray-50 p-4 rounded-lg border border-gray-300 shadow-lg hover:shadow-2xl transition-shadow"
+    >
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-bold text-[#29166e]">
+          {history[index] 
+            ? history[index].length > 20 
+              ? history[index].slice(0, 20) + "..."
+              : history[index]
+            : `File ${index + 1}`}
+        </h3>
+        <button
+          className="text-red-500 hover:text-red-700"
+          onClick={() => removeFile(index)}
+        >
+          Hapus
+        </button>
+      </div>
 
             {/* Dropdowns for Axis */}
             <div className="grid grid-cols-2 gap-4 mb-4">
@@ -235,37 +252,6 @@ export default function ExecutiveSummary({ sheetName }: { sheetName?: string }) 
                   ))}
                 </select>
               </div>
-            </div>
-
-            {/* Table */}
-            <div className="overflow-x-auto mb-4">
-              <table className="w-full border-collapse text-sm">
-                <thead>
-                  <tr className="bg-[#01458e] text-white">
-                    {file.headers.map((header, idx) => (
-                      <th key={idx} className="p-2 text-left">
-                        {header}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {file.tableData.map((row, rowIndex) => (
-                    <tr
-                      key={rowIndex}
-                      className={`${
-                        rowIndex % 2 === 0 ? "bg-gray-100" : "bg-white"
-                      } hover:bg-gray-200`}
-                    >
-                      {row.map((cell, cellIndex) => (
-                        <td key={cellIndex} className="p-2">
-                          {cell}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
             </div>
 
             {/* Charts */}
@@ -312,8 +298,56 @@ export default function ExecutiveSummary({ sheetName }: { sheetName?: string }) 
               <Tooltip />
             </PieChart>
           </ResponsiveContainer>
+
+           {/* Table */}
+           <div className="overflow-x-auto mb-4">
+              <table className="w-full border-collapse text-sm">
+                <thead>
+                  <tr className="bg-[#01458e] text-white">
+                    {file.headers.map((header, idx) => (
+                      <th key={idx} className="p-2 text-left">
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {file.tableData.map((row, rowIndex) => (
+                    <tr
+                      key={rowIndex}
+                      className={`${
+                        rowIndex % 2 === 0 ? "bg-gray-100" : "bg-white"
+                      } hover:bg-gray-200`}
+                    >
+                      {row.map((cell, cellIndex) => (
+                        <td key={cellIndex} className="p-2">
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
         </div>
       )}
+      {/* Modal Peringatan Maksimal Upload */}
+{showModal && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-15 z-50">
+    <div className="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
+      <h2 className="text-lg font-bold text-red-600 mb-4">Batas Maksimal File Tercapai</h2>
+      <p className="text-gray-700 mb-5">
+        Anda hanya dapat mengunggah hingga 3 file. Hapus salah satu jika ingin mengganti.
+      </p>
+      <button
+        onClick={() => setShowModal(false)}
+        className="px-10 py-2 bg-red-600 text-white rounded-md hover:bg-red-800 transition-all duration-300"
+      >
+        Mengerti
+      </button>
+    </div>
+  </div>
+)}
     </div>
   ))}
 </div>

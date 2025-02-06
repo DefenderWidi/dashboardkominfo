@@ -1,19 +1,19 @@
-import mysqlFilesDb from "~/db1.server";
+import jsonDb from '../jsonDb'; // Sesuaikan path jika perlu
+import { json } from "@remix-run/node";
 
 export const loader = async () => {
   try {
-    const files = await mysqlFilesDb.jsonFile.findMany({ 
-      select: { id: true, data: true, uploadedAt: true } 
+    console.log("🚀 Fetching files..."); // Debugging log
+
+    // Menggunakan `jsonDb` yang sudah diimpor
+    const files = await jsonDb.jsonFile.findMany({
+      select: { id: true },
     });
 
-    return new Response(JSON.stringify(files), {
-      headers: { "Content-Type": "application/json" },
-    });
+    console.log("✅ Files fetched:", files); // Debugging log
+    return json(files);
   } catch (error) {
-    console.error("Error fetching files:", error);
-    return new Response(JSON.stringify({ error: "Failed to fetch files" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    console.error("❌ Error fetching files:", error);
+    return json({ error: "Failed to fetch files" }, { status: 500 });
   }
 };
