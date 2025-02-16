@@ -1,3 +1,17 @@
+/**
+ * Executive Summary Component
+ * 
+ * A comprehensive dashboard component that allows users to:
+ * - Upload and analyze up to 3 Excel files
+ * - Visualize data through multiple chart types (Line, Bar, Pie)
+ * - View data in tabular format
+ * - Maintain upload history
+ * 
+ * @component
+ * @param {Object} props
+ * @param {string} [props.sheetName] - Optional name of the sheet to be displayed
+ */
+
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import {

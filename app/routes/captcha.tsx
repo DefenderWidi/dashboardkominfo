@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
+/**
+ * Generates a random 6-character CAPTCHA string
+ * Contains mix of uppercase, lowercase letters and numbers
+ * @returns {string} Random CAPTCHA string
+ */
 const generateCaptcha = () => {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let captcha = "";
@@ -10,15 +15,29 @@ const generateCaptcha = () => {
   return captcha;
 };
 
+/**
+ * CAPTCHA Component
+ * Renders a CAPTCHA verification system with canvas drawing and user input validation
+ * 
+ * @component
+ * @param {Object} props - Component props
+ * @param {Function} props.onVerify - Callback function triggered on CAPTCHA verification
+ */
 export default function Captcha({ onVerify }: { onVerify: (isValid: boolean) => void }) {
+  // State management for CAPTCHA and user input
   const [captcha, setCaptcha] = useState(generateCaptcha());
   const [input, setInput] = useState("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // Draw CAPTCHA whenever it changes
   useEffect(() => {
     drawCaptcha();
   }, [captcha]);
 
+  /**
+   * Draws the CAPTCHA text on canvas with security features
+   * Includes background noise and random lines for added security
+   */
   const drawCaptcha = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -26,23 +45,25 @@ export default function Captcha({ onVerify }: { onVerify: (isValid: boolean) => 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Clear previous content
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Background random noise
+    // Add background
     ctx.fillStyle = "#f3f3f3";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // Configure text style
     ctx.font = "bold 24px Arial";
     ctx.fillStyle = "#01458e";
     
-    // Menggambar CAPTCHA dengan posisi acak
+    // Draw CAPTCHA characters with random positioning
     for (let i = 0; i < captcha.length; i++) {
-      const x = 15 + i * 20 + Math.random() * 5; // Acak posisi horizontal
-      const y = 25 + Math.random() * 5; // Acak posisi vertikal
+      const x = 15 + i * 20 + Math.random() * 5; // Random horizontal position
+      const y = 25 + Math.random() * 5; // Random vertical position
       ctx.fillText(captcha[i], x, y);
     }
 
-    // garis acak untuk keamanan tambahan
+    // Add security lines
     ctx.strokeStyle = "#01458e";
     for (let i = 0; i < 3; i++) {
       ctx.beginPath();
@@ -52,6 +73,10 @@ export default function Captcha({ onVerify }: { onVerify: (isValid: boolean) => 
     }
   };
 
+  /**
+   * Verifies user input against CAPTCHA
+   * Shows success/error toast messages
+   */
   const handleVerify = () => {
     if (input === captcha) {
       toast.success("CAPTCHA benar! Silakan Login");
@@ -64,17 +89,17 @@ export default function Captcha({ onVerify }: { onVerify: (isValid: boolean) => 
 
   return (
     <div className="flex flex-col w-full">
-      {/* Toaster untuk menampilkan notifikasi */}
+      {/* Toast notifications container */}
       <Toaster position="top-center" reverseOrder={false} />
 
-      {/* CAPTCHA dalam Canvas */}
+      {/* CAPTCHA canvas container */}
       <div className="flex items-center justify-between bg-white border border-gray-400 rounded-md px-3 py-2">
         <canvas ref={canvasRef} width={150} height={40} className="bg-gray-100 rounded" />
         <button
           type="button"
           onClick={() => {
             setCaptcha(generateCaptcha());
-            setInput(""); // Reset input ketika captcha diperbarui
+            setInput(""); // Reset input on CAPTCHA refresh
             toast("CAPTCHA telah diperbarui", { icon: "🔄" });
           }}
           className="text-[#01458e] text-sm hover:underline"
@@ -83,7 +108,7 @@ export default function Captcha({ onVerify }: { onVerify: (isValid: boolean) => 
         </button>
       </div>
 
-      {/* Input Captcha + Verify Button */}
+      {/* User input and verification section */}
       <div className="flex items-center mt-2">
         <input
           type="text"
@@ -103,6 +128,6 @@ export default function Captcha({ onVerify }: { onVerify: (isValid: boolean) => 
           </svg>
         </button>
       </div>
-    </div>
-  );
+    </div>
+  );
 }
